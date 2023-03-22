@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: #d65f96 !important;
+}
+
+nav {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+nav img{
+    width: 100px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header{
+    width: 100%;
+    height: 30vh;
+    margin-bottom: 1rem;
+}
+
+ul {
+    list-style: none;
+    display: inline-block;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.Card {
+    position: relative;
+    border-radius: 1rem;
+    box-shadow: -2px -2px 4px #d65f96;
+    padding: 1rem;
+    max-width: 18rem;
+    padding-bottom: 2rem;
+    background: rgb(255, 255, 255);
+}
+
+.Card h5 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.Card .date {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    color: #ffffff;
+    background-color: #d90368;
+    box-shadow: -2px -2px 4px #d65f96;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.Card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 0.5rem 0;
+}
+
+.Card .category {
+    font-weight: 500;
+    color: #e9a6c5;
+    display: block;
+    text-align: center;
+    margin-top: -0.5rem;
+
+}
+
+.Card .price {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    color: #ffffff;
+    background-color: #d90368;
+    box-shadow: -2px -2px 4px #d65f96;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.Card a {
+    background-color: #d90368;
+    color: #ffffff;
+    transition: all 0.3s;
+    text-decoration: none;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.1rem;
+}
+
+a:hover,
+.contant input[type="submit"]:hover {
+    background-color: #d90368;
+    transform: scale(1.2);
+}
+
+footer {
+    width: 100%;
+    height: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: black;
+    color: #e9a6c5;
+}
