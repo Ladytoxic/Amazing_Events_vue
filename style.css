@@ -5,8 +5,13 @@
     font-family: sans-serif;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    background-color: #d65f96 !important;
+    background: rgb(230, 178, 202);
+    background: radial-gradient(circle, rgba(233, 166, 197, 1) 0%, rgba(223, 109, 163, 1) 50%, rgba(217, 3, 104, 1) 100%);
 }
 
 nav {
@@ -14,28 +19,100 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     padding: 1rem;
+    box-shadow: 2px 2px #d65f96;
+
 }
-nav img{
+
+nav img {
     width: 100px;
+    filter: drop-shadow(1px 1px 1px);
+
 }
+
+nav ul {
+    list-style: none;
+    text-align: right;
+    flex-grow: 4;
+}
+
+nav ul li {
+    display: inline-block;
+}
+
+nav ul li button {
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    margin: 0 1rem;
+    transition: all 0.3s;
+    border-radius: 0.5rem;
+
+}
+
+nav ul li button:hover {
+    background-color: #d90368;
+    transform: scale(1.2);
+    cursor: pointer;
+    user-select: none;
+    box-shadow: none;
+    color: #e9a6c5;
+}
+
 
 main {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 1rem;
+    min-height: 90vh;
 }
 
-header{
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 30vh;
     margin-bottom: 1rem;
 }
 
-ul {
-    list-style: none;
-    display: inline-block;
+header h1 {
+    text-align: center;
+    color: #ffff;
+    text-shadow: 1px 1px 1px rgba(255, 3, 87, 0.753);
 }
+
+.search {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+    padding: 1rem;
+    border: solid 2px #d90368;
+    border-radius: 1rem;
+    background-color: #e9a6c5;
+    box-shadow: 2px 2px #d65f96;
+
+}
+
+.search label {
+    padding: 0 0.5rem;
+    user-select: none;
+}
+
+.search input[type="text"] {
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    flex-grow: 2;
+
+}
+
 
 .cards {
     display: flex;
@@ -49,7 +126,7 @@ ul {
 .Card {
     position: relative;
     border-radius: 1rem;
-    box-shadow: -2px -2px 4px #d65f96;
+    box-shadow: 2px 2px #d65f96;
     padding: 1rem;
     max-width: 18rem;
     padding-bottom: 2rem;
@@ -64,11 +141,12 @@ ul {
 
 .Card .date {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.3rem;
+    left: 50%;
+    transform: translateX(-50%);
     color: #ffffff;
     background-color: #d90368;
-    box-shadow: -2px -2px 4px #d65f96;
+    box-shadow: 2px 2px #d65f96;
     border-radius: 0.5rem;
     padding: 0 1rem;
     font-size: 1.1rem;
@@ -97,31 +175,82 @@ ul {
     left: 0.5rem;
     color: #ffffff;
     background-color: #d90368;
-    box-shadow: -2px -2px 4px #d65f96;
+    box-shadow: 2px 2px #d65f96;
     border-radius: 0.5rem;
     padding: 0 1rem;
     font-size: 1.1rem;
     font-weight: 600;
 }
 
-.Card a {
+.Card .details {
     background-color: #d90368;
-    color: #ffffff;
+    color: #fcfcfc;
     transition: all 0.3s;
     text-decoration: none;
     padding: 0 1rem;
+    border: none;
     border-radius: 0.5rem;
     position: absolute;
     bottom: 0.5rem;
     right: 0.5rem;
     font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 2px 2px #d65f96;
+
 }
 
-a:hover,
+.details:hover,
+.close-modal:hover,
 .contant input[type="submit"]:hover {
     background-color: #d90368;
     transform: scale(1.2);
+    cursor: pointer;
+    user-select: none;
+    box-shadow: none;
 }
+
+.modal {
+    background-color: rgba(0, 0, 0, 0.945);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+}
+
+.modal-card {
+    z-index: 100;
+}
+
+.modal-card img {
+    height: 200px;
+    transition: all 0.2s;
+}
+
+.close-modal {
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    color: #fcfcfc;
+    font-size: 1.8rem;
+    position: absolute;
+    top: -1rem;
+    right: -1rem;
+    border: none;
+    border-radius: 50%;
+    background: #d90368;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    transition: all 0.3s;
+    box-shadow: 1px 2px #d65f96;
+
+
+}
+
 
 footer {
     width: 100%;
@@ -132,4 +261,20 @@ footer {
     text-align: center;
     background-color: black;
     color: #e9a6c5;
+}
+
+
+
+.fade-in {
+    animation: fade-in 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
