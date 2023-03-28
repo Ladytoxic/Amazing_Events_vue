@@ -1,4 +1,4 @@
-const Home = { template:'<div><h1>Home</h1></div>'}
+const Home = { template: '<div>{{categorias}}</div>' }
 const upcoming_events = { template: '<div>Próximos Eventos</div>' }
 const past_events = { template: '<div>Eventos Pasados</div>' }
 
@@ -12,6 +12,8 @@ const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
     routes
 })
+
+
 
 const app = Vue.createApp({
     data() {
@@ -43,7 +45,7 @@ const app = Vue.createApp({
                     this.dataEvents = data.events;
                     this.ordenar(this.dataEvents);
                     this.events = this.dataEvents;
-                    this.buscarCategotias(this.dataEvents)
+                    this.buscarCategotias(this.events);
                     this.pagina = 'Home'
                 })
                 .catch(error => console.log(error));
@@ -64,20 +66,27 @@ const app = Vue.createApp({
             events.sort((a, b) => new Date(a.date) - new Date(b.date));
             return events
         },
+
         mostrarTodos() {
-            this.events = this.dataEvents
+            this.events = this.dataEvents;
+            router.push('/');
             this.pagina = 'Home'
         },
+
         buscarEventosProximos() {
             this.events = this.dataEvents.filter(evento => evento.date >= this.date);
             this.ordenar(this.events);
             this.pagina = 'Upcoming Events'
+            router.push('/upcoming_events');
         },
+
         buscarEventosPasados() {
             this.events = this.dataEvents.filter(evento => evento.date < this.date);
             this.ordenar(this.events);
             this.pagina = 'Past Events'
+            router.push('/past_events');
         },
+
         buscarCategotias(data) {
             data.forEach(event => {
                 if (!this.categorias.includes(event.category) && event.category) {
@@ -85,6 +94,7 @@ const app = Vue.createApp({
                 }
             })
         },
+
         filtrar() {
             let filtrados = this.dataEvents.filter(event => {
                 let cumpleCategoria = this.categoriasSelect.length === 0 || this.categoriasSelect.includes(event.category);
@@ -110,5 +120,3 @@ const app = Vue.createApp({
 })
 app.use(router)
 app.mount('#app')
-
-
