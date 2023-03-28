@@ -75,12 +75,9 @@ nav ul li button:hover {
     transition: all 0.3s;
     border-radius: 0.5rem;
     text-decoration: none;
-
-
 }
 
 .router-link:hover {
-
     background-color: #d90368;
     transform: scale(1.2);
     cursor: pointer;
