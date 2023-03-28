@@ -1,5 +1,19 @@
-const { createApp } = Vue
-createApp({
+const Home = { template:'<div><h1>Home</h1></div>'}
+const upcoming_events = { template: '<div>Próximos Eventos</div>' }
+const past_events = { template: '<div>Eventos Pasados</div>' }
+
+const routes = [
+    { path: '/', component: Home },
+    { path: '/upcoming_events', component: upcoming_events },
+    { path: '/past_events', component: past_events },
+]
+
+const router = VueRouter.createRouter({
+    history: VueRouter.createWebHashHistory(),
+    routes
+})
+
+const app = Vue.createApp({
     data() {
         return {
             urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
@@ -12,17 +26,14 @@ createApp({
             categoriasSelect: [],
             eventosPasados: [],
             eventosProximos: [],
-            pagina:''
+            pagina: ''
         }
     },
-
     created() {
         this.obtenerDatos(this.urlApi);
     },
-
     mounted() {
     },
-
     methods: {
         obtenerDatos(api) {
             fetch(api)
@@ -55,13 +66,12 @@ createApp({
         },
         mostrarTodos() {
             this.events = this.dataEvents
-            this.pagina = 'Home'           
+            this.pagina = 'Home'
         },
         buscarEventosProximos() {
             this.events = this.dataEvents.filter(evento => evento.date >= this.date);
             this.ordenar(this.events);
             this.pagina = 'Upcoming Events'
-
         },
         buscarEventosPasados() {
             this.events = this.dataEvents.filter(evento => evento.date < this.date);
@@ -97,4 +107,8 @@ createApp({
 
     }
 
-}).mount('#app')
+})
+app.use(router)
+app.mount('#app')
+
+
