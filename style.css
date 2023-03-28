@@ -30,6 +30,9 @@ nav img {
     filter: drop-shadow(1px 1px 1px);
 
 }
+nav span {
+    padding: 0 0.3rem;
+}
 
 nav ul {
     list-style: none;
