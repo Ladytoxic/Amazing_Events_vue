@@ -1,4 +1,4 @@
-const Home = { template:'<div><h1>Home</h1></div>'}
+const Home = { template: '<div>{{categorias}}</div>' }
 const upcoming_events = { template: '<div>Próximos Eventos</div>' }
 const past_events = { template: '<div>Eventos Pasados</div>' }
 
@@ -24,9 +24,8 @@ const app = Vue.createApp({
             text: '',
             categorias: [],
             categoriasSelect: [],
-            eventosPasados: [],
-            eventosProximos: [],
-            pagina: ''
+            pagina: '',
+            filtrados: '',
         }
     },
     created() {
@@ -43,11 +42,12 @@ const app = Vue.createApp({
                     this.dataEvents = data.events;
                     this.ordenar(this.dataEvents);
                     this.events = this.dataEvents;
-                    this.buscarCategotias(this.dataEvents)
+                    this.buscarCategotias(this.events);
                     this.pagina = 'Home'
                 })
                 .catch(error => console.log(error));
         },
+
         buscarEvento(id, array) {
             const buscarId = array.find(elem => elem._id === id);
             if (buscarId) {
@@ -57,27 +57,39 @@ const app = Vue.createApp({
                 console.log(`No se encontró ID ${id}`);
             }
         },
+
         closeModal() {
             this.evento = ''
         },
+
         ordenar(events) {
             events.sort((a, b) => new Date(a.date) - new Date(b.date));
             return events
         },
+
+        limpiarFiltros() {
+            this.text = '';
+            this.categoriasSelect = [];
+        },
+
         mostrarTodos() {
-            this.events = this.dataEvents
-            this.pagina = 'Home'
+            this.events = this.dataEvents;
+            router.push('/');
+            this.pagina = 'Home';
         },
-        buscarEventosProximos() {
-            this.events = this.dataEvents.filter(evento => evento.date >= this.date);
-            this.ordenar(this.events);
-            this.pagina = 'Upcoming Events'
+
+        buscarEventosProximos(data) {
+            this.events = data.filter(evento => evento.date >= this.date);
+            this.pagina = 'Upcoming Events';
+            router.push('/upcoming_events');
         },
-        buscarEventosPasados() {
-            this.events = this.dataEvents.filter(evento => evento.date < this.date);
-            this.ordenar(this.events);
-            this.pagina = 'Past Events'
+
+        buscarEventosPasados(data) {
+            this.events = data.filter(evento => evento.date < this.date);
+            this.pagina = 'Past Events';
+            router.push('/past_events');
         },
+
         buscarCategotias(data) {
             data.forEach(event => {
                 if (!this.categorias.includes(event.category) && event.category) {
@@ -85,14 +97,15 @@ const app = Vue.createApp({
                 }
             })
         },
+
         filtrar() {
-            let filtrados = this.dataEvents.filter(event => {
-                let cumpleCategoria = this.categoriasSelect.length === 0 || this.categoriasSelect.includes(event.category);
-                let cumpleNombre = event.name.toLowerCase().includes(this.text.toLowerCase());
-                return cumpleCategoria && cumpleNombre;
+            this.filtrados = this.dataEvents.filter(event => {
+                let categoria = this.categoriasSelect.length === 0 || this.categoriasSelect.includes(event.category);
+                let nombre = event.name.toLowerCase().includes(this.text.toLowerCase());
+                return categoria && nombre;
             });
-            this.events = filtrados;
-        }
+            this.events = this.filtrados;
+        },          
     },
     watch: {
         text: function () {
@@ -110,5 +123,3 @@ const app = Vue.createApp({
 })
 app.use(router)
 app.mount('#app')
-
-
