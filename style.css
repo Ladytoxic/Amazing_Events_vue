@@ -47,24 +47,6 @@ nav ul li {
     display: inline-block;
 }
 
-nav ul li button {
-    padding: 0.5rem;
-    background: none;
-    border: none;
-    margin: 1rem;
-    transition: all 0.3s;
-    border-radius: 0.5rem;
-
-}
-
-nav ul li button:hover {
-    background-color: #d90368;
-    transform: scale(1.2);
-    cursor: pointer;
-    user-select: none;
-    box-shadow: none;
-    color: #e9a6c5;
-}
 
 .router-link {
     padding: 0.5rem;
@@ -276,8 +258,23 @@ footer {
     justify-content: center;
     align-items: center;
     text-align: center;
+    flex-wrap: wrap;
     background-color: black;
+    gap: 2rem;
     color: #e9a6c5;
+}
+
+footer a {
+    text-decoration: none;
+    color: #e9a6c5;
+    transition: all 0.2s;
+    margin: 0.5rem;
+    font-size: 2rem;
+    text-shadow: #4b0023 1px 1px 1px;
+}
+
+footer a:hover{
+    color: #d90368;
 }
 
 
