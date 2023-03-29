@@ -19,65 +19,24 @@
             <img src="./assets/img/Logo_Amazing_Events.png" alt="Logo de Amazing Events">
             <span>1.2.2v</span>
             <ul>
-                <li><router-link class="router-link" to="/" @click="mostrarTodos">Home</router-link></li>
-                <li><router-link class="router-link" to="/upcoming_events" @click="buscarEventosProximos(dataEvents)">Upcoming Events</router-link></li>
-                <li><router-link class="router-link" to="/past_events" @click="buscarEventosPasados(dataEvents)">Past Events</router-link></li>
+                <li><router-link class="router-link" to="/" @click="pag('Home')">Home</router-link></li>
+                <li><router-link class="router-link" to="/upcoming_events" @click="pag('Upcoming Events')">Upcoming Events</router-link></li>
+                <li><router-link class="router-link" to="/past_events" @click="pag('Past Events')">Past Events</router-link></li>
             </ul>
         </nav>
         <header>
             <h1 v-cloak class="display-1">{{pagina}}</h1>
         </header>
         <main>
-            <!-- <router-view></router-view> -->
-            <div class="search fade-in">
-                <div class="checkbox" v-for="category of categorias">
-                    <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
-                    <label :for="category">{{category}}</label>
-                </div>
-                <input type="text" placeholder="Search event" v-model="text">
-            </div>
-            <section class="cards">
-                <h4 v-if="!events.length">No events found</h4>
-                <div v-cloak v-for="event of events" class="Card fade-in">
-                    <div class="fade-in">
-                        <img :src="event.image" alt="">
-                        <div>
-                            <p class="date">{{event.date}}</p>
-                            <h5>{{event.name}}</h5>
-                            <span class="category">{{event.category}}</span>
-                            <p>{{event.place}}</p>
-                            <p>{{event.description}}</p>
-                            <span class="price">{{ event.price.toLocaleString('en-US', { style: 'currency', currency:
-                                'USD'}) }}</span>
-                        </div>
-                        <button class="details" @click="buscarEvento(event._id, dataEvents)">Details</button>
-                    </div>
-                </div>
-            </section>
-            <div v-cloak v-if="evento" class="modal fade-in" style="display: flex;">
-                <div class="Card modal-card">
-                    <div class="fade-in">
-                        <img :src="evento.image" alt="Evento">
-                        <div>
-                            <p class="date">{{evento.date}}</p>
-                            <h5>{{evento.name}}</h5>
-                            <span class="category">{{evento.category}}</span>
-                            <p>{{evento.place}}</p>
-                            <p>{{evento.description}}</p>
-                            <p>{{evento.capacity ? 'Capacity: ' + evento.capacity : ''}}</p>
-                            <p>{{evento.assistance !== undefined ? 'Assistance: ' + evento.assistance : ''}}</p>
-                            <p>{{evento.estimate !== undefined ? 'Estimate: ' + evento.estimate : ''}}</p>
-                            <span class="price">{{ evento.price.toLocaleString('en-US', { style: 'currency',
-                                currency:
-                                'USD'}) }}</span>
-                        </div>
-                    </div>
-                    <button @click="closeModal()" class="close-modal">x</button>
-                </div>
-            </div>
+            <router-view></router-view>
         </main>
         <footer>
-            Almendra Romina &COPY;
+            <div>
+                <a href="#" target="_blank"><i class="bi-instagram"></i></a>
+                <a href="#" target="_blank"><i class="bi-facebook"></i></a>
+                <a href="#" target="_blank"><i class="bi-whatsapp"></i></a>
+            </div>
+            Almendra Romina 2023 &COPY;
         </footer>
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
