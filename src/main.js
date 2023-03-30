@@ -1,5 +1,70 @@
-const Home = {
+const home = {
+    data() {
+        return {
+            urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
+            dataEvents: [],
+            events: [],
+            date: '',
+            evento: '',
+            text: '',
+            categorias: [],
+            categoriasSelect: [],
+            pagina: '',
+            filtrados: '',
+        }
+    },
+    created() {
+        this.obtenerDatos(this.urlApi);
+    },
+    mounted() {
+        console.log(this.test)
+    },
+    methods: {
+        obtenerDatos(api) {
+            fetch(api)
+                .then(response => response.json())
+                .then(data => {
+                    this.date = data.currentDate;
+                    this.dataEvents = data.events
+                    this.events = this.ordenar(data.events);
+                    this.categorias = this.buscarCategotias(this.events);
+                })
+                .catch(error => console.log(error));
+        },
+
+        ordenar(events) {
+            events.sort((a, b) => new Date(a.date) - new Date(b.date));
+            return events;
+        },
+
+        buscarCategotias(data) {
+            this.categorias = data.reduce((result, event) => {
+                if (!result.includes(event.category) && event.category) {
+                    result.push(event.category);
+                }
+                return result;
+            }, []);
+            return this.categorias;
+        },
+        filtrar() {
+            this.filtrados = this.dataEvents.filter(event => {
+                let categoria = this.categoriasSelect.length === 0 || this.categoriasSelect.includes(event.category);
+                let nombre = event.name.toLowerCase().includes(this.text.toLowerCase());
+                return categoria && nombre;
+            });
+            this.events = this.filtrados;
+        },
+    },
+    watch: {
+        text: function () {
+            this.filtrar();
+        },
+        categoriasSelect: function () {
+            this.filtrar();
+        }
+    },
     template: `
+    <hola></hola>
     <div class="search fade-in">
     <div class="checkbox" v-for="category of categorias">
         <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
@@ -27,72 +92,8 @@ const Home = {
           
         </div>
     </div>
-</section>`,
-    data() {
-        return {
-            urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
-            dataEvents: [],
-            events: [],
-            date: '',
-            evento: '',
-            text: '',
-            categorias: [],
-            categoriasSelect: [],
-            pagina: '',
-            filtrados: '',
-        }
-    },
-    created() {
-        this.obtenerDatos(this.urlApi);
-    },
-    mounted() {
-    },
-    methods: {
-        obtenerDatos(api) {
-            fetch(api)
-                .then(response => response.json())
-                .then(data => {
-                    this.date = data.currentDate;
-                    this.dataEvents = data.events;
-                    this.ordenar(this.dataEvents);
-                    this.events = this.dataEvents;
-                    this.buscarCategotias(this.events);
-                })
-                .catch(error => console.log(error));
-        },
-
-        ordenar(events) {
-            events.sort((a, b) => new Date(a.date) - new Date(b.date));
-            return events
-        },
-
-        buscarCategotias(data) {
-            data.forEach(event => {
-                if (!this.categorias.includes(event.category) && event.category) {
-                    this.categorias.push(event.category)
-                }
-            })
-        },
-
-        filtrar() {
-            this.filtrados = this.dataEvents.filter(event => {
-                let categoria = this.categoriasSelect.length === 0 || this.categoriasSelect.includes(event.category);
-                let nombre = event.name.toLowerCase().includes(this.text.toLowerCase());
-                return categoria && nombre;
-            });
-            this.events = this.filtrados;
-        },
-    },
-    watch: {
-        text: function () {
-            this.filtrar();
-        },
-        categoriasSelect: function () {
-            this.filtrar();
-        }
-    },
+</section>`
 }
-
 
 const upcoming_events = {
     template: `
@@ -358,7 +359,6 @@ const details = {
                     this.dataEvents = data.events;
                     this.pagina = 'Details'
                     this.buscarEvento();
-                    console.log(this.$route.params.id)
                 })
                 .catch(error => console.log(error));
         },
@@ -377,7 +377,7 @@ const details = {
 }
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: home },
     { path: '/upcoming_events', component: upcoming_events },
     { path: '/past_events', component: past_events },
     { path: '/details/:id', name: 'details', component: details }
@@ -388,20 +388,65 @@ const router = VueRouter.createRouter({
     routes
 })
 
+
+
 const app = Vue.createApp({
+    components: {
+        home,
+        upcoming_events,
+        past_events,
+    },
     data() {
         return {
             pagina: '',
+            urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
+            dataEvents: [],
+            events: [],
+            date: '',
+            categorias: [],
+            loaded: false,
         }
     },
+    created() {
+
+    },
+    mounted() {
+    },
     methods: {
+        obtenerDatos(api) {
+            fetch(api)
+                .then(response => response.json())
+                .then(data => {
+                    this.date = data.currentDate;
+                    this.dataEvents = data.events
+                    this.events = this.ordenar(data.events);
+                    this.categorias = this.buscarCategotias(this.events);
+                    this.loaded = true;
+                })
+                .catch(error => console.log(error));
+        },
+
+        ordenar(events) {
+            events.sort((a, b) => new Date(a.date) - new Date(b.date));
+            return events;
+        },
+
+        buscarCategotias(data) {
+            this.categorias = data.reduce((result, event) => {
+                if (!result.includes(event.category) && event.category) {
+                    result.push(event.category);
+                }
+                return result;
+            }, []);
+            return this.categorias;
+        },
+
         pag(textoBoton) {
             this.pagina = textoBoton;
         }
     },
     watch: {
         '$route': function () {
-            // Actualiza la variable pagina cuando cambia la ruta
             const ruta = this.$route.path;
             if (ruta === '/') {
                 this.pagina = 'Home';
@@ -413,7 +458,8 @@ const app = Vue.createApp({
                 this.pagina = '';
             }
         }
-    }
+    },
 })
 app.use(router)
 app.mount('#app')
+
