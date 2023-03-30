@@ -5,7 +5,6 @@ const home = {
             dataEvents: [],
             events: [],
             date: '',
-            evento: '',
             text: '',
             categorias: [],
             categoriasSelect: [],
@@ -16,9 +15,8 @@ const home = {
     created() {
         this.obtenerDatos(this.urlApi);
     },
-    mounted() {
-        console.log(this.test)
-    },
+
+    mounted() { },
     methods: {
         obtenerDatos(api) {
             fetch(api)
@@ -63,9 +61,8 @@ const home = {
             this.filtrar();
         }
     },
-    template: `
-    <hola></hola>
-    <div class="search fade-in">
+    template:
+        `<div class="search fade-in">
     <div class="checkbox" v-for="category of categorias">
         <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
         <label :for="category">{{category}}</label>
@@ -75,7 +72,7 @@ const home = {
 <section class="cards">
     <h4 v-if="!events.length">No events found</h4>
     <div v-cloak v-for="event of events" class="Card fade-in">
-        <div class="fade-in">
+       <div class="fade-in">
             <img :src="event.image" alt="">
             <div>
                 <p class="date">{{event.date}}</p>
@@ -86,18 +83,17 @@ const home = {
                 <span class="price">{{ event.price.toLocaleString('en-US', { style: 'currency', currency:
                     'USD'}) }}</span>
             </div>
-            <router-link :to="{ name: 'details', params: { id: event._id } }">
-            <button class="details">Details</button>
-            </router-link>
-          
+         <router-link :to="{ name: 'details', params: { id: event._id } }">
+             <button class="details">Details</button>
+         </router-link>
         </div>
     </div>
 </section>`
 }
 
 const upcoming_events = {
-    template: `
-    <div class="search fade-in">
+    template:
+`<div class="search fade-in">
     <div class="checkbox" v-for="category of categorias">
         <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
         <label :for="category">{{category}}</label>
@@ -132,7 +128,6 @@ const upcoming_events = {
             events: [],
             eventsP: [],
             date: '',
-            evento: '',
             text: '',
             categorias: [],
             categoriasSelect: [],
@@ -143,8 +138,7 @@ const upcoming_events = {
     created() {
         this.obtenerDatos(this.urlApi);
     },
-    mounted() {
-    },
+    mounted() { },
     methods: {
         obtenerDatos(api) {
             fetch(api)
@@ -154,7 +148,7 @@ const upcoming_events = {
                     this.dataEvents = data.events;
                     this.ordenar(this.dataEvents);
                     this.buscarEventosProximos(this.dataEvents);
-                    this.buscarCategotias();
+                    this.categorias = this.buscarCategotias(this.events);
                     this.pagina = 'Upcoming Events';
                 })
                 .catch(error => console.log(error));
@@ -167,14 +161,15 @@ const upcoming_events = {
         buscarEventosProximos(data) {
             this.events = data.filter(evento => evento.date >= this.date);
             this.eventsP = this.events
-            this.pagina = 'Upcoming Events';
         },
-        buscarCategotias() {
-            this.events.forEach(event => {
-                if (!this.categorias.includes(event.category) && event.category) {
-                    this.categorias.push(event.category)
+        buscarCategotias(data) {
+            this.categorias = data.reduce((result, event) => {
+                if (!result.includes(event.category) && event.category) {
+                    result.push(event.category);
                 }
-            })
+                return result;
+            }, []);
+            return this.categorias;
         },
 
         filtrar() {
@@ -239,7 +234,6 @@ const past_events = {
             events: [],
             eventsPast: [],
             date: '',
-            evento: '',
             text: '',
             categorias: [],
             categoriasSelect: [],
@@ -250,8 +244,8 @@ const past_events = {
     created() {
         this.obtenerDatos(this.urlApi);
     },
-    mounted() {
-    },
+    mounted() { },
+
     methods: {
         obtenerDatos(api) {
             fetch(api)
@@ -261,8 +255,8 @@ const past_events = {
                     this.dataEvents = data.events;
                     this.ordenar(this.dataEvents);
                     this.buscarEventosPasados(this.dataEvents);
-                    this.buscarCategotias();
-                    this.pagina = 'Upcoming Events';
+                    this.categorias = this.buscarCategotias(this.events);
+                    this.pagina = 'Past Events';
                 })
                 .catch(error => console.log(error));
         },
@@ -275,14 +269,16 @@ const past_events = {
         buscarEventosPasados(data) {
             this.events = data.filter(evento => evento.date < this.date);
             this.eventsPast = this.events
-            this.pagina = 'Past Events';
+
         },
-        buscarCategotias() {
-            this.events.forEach(event => {
-                if (!this.categorias.includes(event.category) && event.category) {
-                    this.categorias.push(event.category)
+        buscarCategotias(data) {
+            this.categorias = data.reduce((result, event) => {
+                if (!result.includes(event.category) && event.category) {
+                    result.push(event.category);
                 }
-            })
+                return result;
+            }, []);
+            return this.categorias;
         },
 
         filtrar() {
@@ -318,20 +314,20 @@ const details = {
             <div class="fade-in">
                 <img :src="evento.image" alt="Evento">
             <div>
-            <p class="date">{{evento.date}}</p>
-            <h5>{{evento.name}}</h5>
-            <span class="category">{{evento.category}}</span>
-            <p>{{evento.place}}</p>
-            <p>{{evento.description}}</p>
-            <p>{{evento.capacity ? 'Capacity: ' + evento.capacity : ''}}</p>
-            <p>{{evento.assistance !== undefined ? 'Assistance: ' + evento.assistance : ''}}</p>
-            <p>{{evento.estimate !== undefined ? 'Estimate: ' + evento.estimate : ''}}</p>
-            <span class="price">{{ evento.price.toLocaleString('en-US', { style: 'currency',
+                <p class="date">{{evento.date}}</p>
+                <h5>{{evento.name}}</h5>
+                <span class="category">{{evento.category}}</span>
+                <p>{{evento.place}}</p>
+                <p>{{evento.description}}</p>
+                <p>{{evento.capacity ? 'Capacity: ' + evento.capacity : ''}}</p>
+                <p>{{evento.assistance !== undefined ? 'Assistance: ' + evento.assistance : ''}}</p>
+                <p>{{evento.estimate !== undefined ? 'Estimate: ' + evento.estimate : ''}}</p>
+                <span class="price">{{ evento.price.toLocaleString('en-US', { style: 'currency',
                 currency:
                 'USD'}) }}</span>
             </div>
         </div>
-        <button @click="closeModal()" class="close-modal">x</button>
+            <button @click="closeModal()" class="close-modal">x</button>
         </div>
     </div>
 </section>
@@ -364,7 +360,6 @@ const details = {
         },
         buscarEvento() {
             this.evento = this.dataEvents.find(elem => elem._id == this.$route.params.id);
-            console.log(this.evento);
             this.pagina = 'Details'
         },
         closeModal() {
@@ -376,19 +371,15 @@ const details = {
 
 }
 
-const routes = [
-    { path: '/', component: home },
-    { path: '/upcoming_events', component: upcoming_events },
-    { path: '/past_events', component: past_events },
-    { path: '/details/:id', name: 'details', component: details }
-]
-
 const router = VueRouter.createRouter({
     history: VueRouter.createWebHashHistory(),
-    routes
+    routes: [
+        { path: '/', component: home },
+        { path: '/upcoming_events', component: upcoming_events },
+        { path: '/past_events', component: past_events },
+        { path: '/details/:id', name: 'details', component: details }
+    ]
 })
-
-
 
 const app = Vue.createApp({
     components: {
@@ -399,48 +390,13 @@ const app = Vue.createApp({
     data() {
         return {
             pagina: '',
-            urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
-            dataEvents: [],
-            events: [],
-            date: '',
-            categorias: [],
             loaded: false,
         }
     },
-    created() {
+    created() { },
+    mounted() { },
 
-    },
-    mounted() {
-    },
     methods: {
-        obtenerDatos(api) {
-            fetch(api)
-                .then(response => response.json())
-                .then(data => {
-                    this.date = data.currentDate;
-                    this.dataEvents = data.events
-                    this.events = this.ordenar(data.events);
-                    this.categorias = this.buscarCategotias(this.events);
-                    this.loaded = true;
-                })
-                .catch(error => console.log(error));
-        },
-
-        ordenar(events) {
-            events.sort((a, b) => new Date(a.date) - new Date(b.date));
-            return events;
-        },
-
-        buscarCategotias(data) {
-            this.categorias = data.reduce((result, event) => {
-                if (!result.includes(event.category) && event.category) {
-                    result.push(event.category);
-                }
-                return result;
-            }, []);
-            return this.categorias;
-        },
-
         pag(textoBoton) {
             this.pagina = textoBoton;
         }
