@@ -1,3 +1,32 @@
+function cardHTML() {
+    return `<div class="search fade-in">
+<div class="checkbox" v-for="category of categorias">
+    <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
+    <label :for="category">{{category}}</label>
+</div>
+<input type="text" placeholder="Search event" v-model="text">
+</div>
+<section class="cards">
+<h4 v-if="!events.length">No events found</h4>
+<div v-cloak v-for="event of events" class="Card fade-in">
+   <div class="fade-in">
+        <img :src="event.image" alt="">
+        <div>
+            <p class="date">{{event.date}}</p>
+            <h5>{{event.name}}</h5>
+            <span class="category">{{event.category}}</span>
+            <p>{{event.place}}</p>
+            <p>{{event.description}}</p>
+            <span class="price">{{ event.price.toLocaleString('en-US', { style: 'currency', currency:
+                'USD'}) }}</span>
+        </div>
+     <router-link :to="{ name: 'details', params: { id: event._id } }">
+         <button class="details">Details</button>
+     </router-link>
+    </div>
+</div>
+</section>`
+}
 const home = {
     data() {
         return {
@@ -61,66 +90,11 @@ const home = {
             this.filtrar();
         }
     },
-    template:
-        `<div class="search fade-in">
-    <div class="checkbox" v-for="category of categorias">
-        <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
-        <label :for="category">{{category}}</label>
-    </div>
-    <input type="text" placeholder="Search event" v-model="text">
-</div>
-<section class="cards">
-    <h4 v-if="!events.length">No events found</h4>
-    <div v-cloak v-for="event of events" class="Card fade-in">
-       <div class="fade-in">
-            <img :src="event.image" alt="">
-            <div>
-                <p class="date">{{event.date}}</p>
-                <h5>{{event.name}}</h5>
-                <span class="category">{{event.category}}</span>
-                <p>{{event.place}}</p>
-                <p>{{event.description}}</p>
-                <span class="price">{{ event.price.toLocaleString('en-US', { style: 'currency', currency:
-                    'USD'}) }}</span>
-            </div>
-         <router-link :to="{ name: 'details', params: { id: event._id } }">
-             <button class="details">Details</button>
-         </router-link>
-        </div>
-    </div>
-</section>`
+    template: cardHTML()
 }
 
 const upcoming_events = {
-    template:
-`<div class="search fade-in">
-    <div class="checkbox" v-for="category of categorias">
-        <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
-        <label :for="category">{{category}}</label>
-    </div>
-    <input type="text" placeholder="Search event" v-model="text">
-</div>
-<section class="cards">
-    <h4 v-if="!events.length">No events found</h4>
-    <div v-cloak v-for="event of events" class="Card fade-in">
-        <div class="fade-in">
-            <img :src="event.image" alt="">
-            <div>
-                <p class="date">{{event.date}}</p>
-                <h5>{{event.name}}</h5>
-                <span class="category">{{event.category}}</span>
-                <p>{{event.place}}</p>
-                <p>{{event.description}}</p>
-                <span class="price">{{ event.price.toLocaleString('en-US', { style: 'currency', currency:
-                    'USD'}) }}</span>
-            </div>
-            <router-link :to="{ name: 'details', params: { id: event._id } }">
-            <button class="details">Details</button>
-            </router-link>
-          
-        </div>
-    </div>
-</section>`,
+    template: cardHTML(),
     data() {
         return {
             urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
@@ -198,35 +172,8 @@ const upcoming_events = {
 }
 
 const past_events = {
-    template: `
-    <div class="search fade-in">
-    <div class="checkbox" v-for="category of categorias">
-        <input v-model="categoriasSelect" type="checkbox" :id="category" :value="category">
-        <label :for="category">{{category}}</label>
-    </div>
-    <input type="text" placeholder="Search event" v-model="text">
-</div>
-<section class="cards">
-    <h4 v-if="!events.length">No events found</h4>
-    <div v-cloak v-for="event of events" class="Card fade-in">
-        <div class="fade-in">
-            <img :src="event.image" alt="">
-            <div>
-                <p class="date">{{event.date}}</p>
-                <h5>{{event.name}}</h5>
-                <span class="category">{{event.category}}</span>
-                <p>{{event.place}}</p>
-                <p>{{event.description}}</p>
-                <span class="price">{{ event.price.toLocaleString('en-US', { style: 'currency', currency:
-                    'USD'}) }}</span>
-            </div>
-            <router-link :to="{ name: 'details', params: { id: event._id } }">
-            <button class="details">Details</button>
-            </router-link>
-          
-        </div>
-    </div>
-</section>`,
+    template: cardHTML(),
+
     data() {
         return {
             urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
@@ -307,8 +254,7 @@ const past_events = {
 }
 
 const details = {
-    template: `
-<section>
+    template: `<section>
     <div v-cloak v-if="evento" class="modal fade-in" style="display: flex;">
         <div class="Card modal-card">
             <div class="fade-in">
@@ -330,8 +276,7 @@ const details = {
             <button @click="closeModal()" class="close-modal">x</button>
         </div>
     </div>
-</section>
-`,
+</section>`,
     data() {
         return {
             urlApi: 'https://mindhub-xj03.onrender.com/api/amazing',
